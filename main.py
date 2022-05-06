@@ -32,6 +32,7 @@ def send_book(msg):
         markup.add(btn)
     bot.send_message(chat_id=msg.chat.id, text="Choose which book you would like to read or Verse for random Verse:", reply_markup=markup)
 
+
 @bot.message_handler(commands=["Verse"])
 def random_verse(msg):
     random_chapter_name = random.choice(list_of_books)
