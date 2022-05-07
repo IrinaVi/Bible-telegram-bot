@@ -34,7 +34,7 @@ dkt = {'Genesis': {'abbr': 'Gen', 'chapters_number': 50}, 'Leviticus': {'abbr': 
        'Ephesians': {'abbr': 'Ephes', 'chapters_number': 6}, 'Philippians': {'abbr': 'Phil', 'chapters_number': 4},
        'Colossians': {'abbr': 'Col', 'chapters_number': 4}, '1Thessalonians': {'abbr': '1 Thess', 'chapters_number': 5},
        '2Thessalonians': {'abbr': '2 Thess', 'chapters_number': 3}, '1Timothy': {'abbr': '1 Tim', 'chapters_number': 6},
-       '2Timothy': {'abbr': '2 Tim', 'chapters_number': 4}, 'Titus': {'abbr': 'Titus', 'chapters_number': 3},
+       '2 Timothy': {'abbr': '2 Tim', 'chapters_number': 4}, 'Titus': {'abbr': 'Titus', 'chapters_number': 3},
        'Philemon': {'abbr': 'Philem', 'chapters_number': 1}, 'Hebrews': {'abbr': 'Hebrews', 'chapters_number': 13},
        'James': {'abbr': 'James', 'chapters_number': 5}, '1Peter': {'abbr': '1 Pet', 'chapters_number': 5},
        '2Peter': {'abbr': '2 Pet', 'chapters_number': 3}, '1John': {'abbr': '1 John', 'chapters_number': 5},
@@ -58,42 +58,32 @@ NEW_TESTAMENT = ['Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1Corinthi
                  'Philippians', 'Colossians', '1Thessalonians', '2Thessalonians', '1Timothy', '2Timothy', 'Titus', 'Philemon',
                  'Hebrews', 'James', '1Peter', '2Peter', '1John', '2John', '3John', 'Jude', 'Revelation']
 
+print(f"OLD: {len(OLD_TESTAMENT)}")
+print(f"NEW: {len(NEW_TESTAMENT)}")
+
 API_KEY = os.environ['TELEGRAM_API']
 
 #create bot:
 bot = telebot.TeleBot(API_KEY)
 
 #KEY - FIRST STEP, SEND LIST OF BOOKS
-@bot.message_handler(commands=['old_testament', 'new_testament'])
+@bot.message_handler(commands=['old_testament', 'new_testament', 'back'])
 def send_book(msg):
-    print("send_book triggered")
     markup = types.ReplyKeyboardMarkup(row_width=1)
     btn_verse = types.KeyboardButton("/verse")
-    btn_back = types.KeyboardButton("/back")
-    markup.add(btn_verse, btn_back)
-    if msg.text == "/old_testament":
-        print("Old test triggered")
-        for book in OLD_TESTAMENT:
-            btn = types.KeyboardButton(f"/{book}")
+    markup.add(btn_verse)
+    if msg.text == "old_testament":
+        for key,value in OLD_TESTAMENT.items():
+            btn = types.KeyboardButton(f"/{key}")
             markup.add(btn)
         bot.send_message(chat_id=msg.chat.id, text="Choose which book you would like to read or Verse for random Verse:", reply_markup=markup)
 
-    elif msg.text == "/new_testament":
-        print("New test triggered")
-        for book in NEW_TESTAMENT:
-            btn = types.KeyboardButton(f"/{book}")
+    elif msg.text == "new_testament":
+        for key, value in NEW_TESTAMENT.items():
+            btn = types.KeyboardButton(f"/{key}")
             markup.add(btn)
         bot.send_message(chat_id=msg.chat.id, text="Choose which book you would like to read or Verse for random Verse:",
                          reply_markup=markup)
-
-@bot.message_handler(commands=['back'])
-def back(msg):
-    markup = types.ReplyKeyboardMarkup(row_width=1)
-    btn_verse = types.KeyboardButton("/verse")
-    btn_old = types.KeyboardButton("/old_testament")
-    btn_new = types.KeyboardButton("/new_testament")
-    markup.add(btn_verse, btn_old, btn_new)
-    bot.send_message(chat_id=msg.chat.id, text="Choose which Testament you would like to read", reply_markup=markup)
 
 @bot.message_handler(commands=["verse"])
 def random_verse(msg):
@@ -103,12 +93,7 @@ def random_verse(msg):
     verses_number = len(web[abbreviation][chapter_number])
     random_verse_number = random.randint(1,verses_number)
     random_verse = web[abbreviation][chapter_number][random_verse_number]
-    markup = types.ReplyKeyboardMarkup(row_width=1)
-    btn_verse = types.KeyboardButton("/verse")
-    btn_old = types.KeyboardButton("/old_testament")
-    btn_new = types.KeyboardButton("/new_testament")
-    markup.add(btn_verse, btn_old, btn_new)
-    bot.send_message(chat_id=msg.chat.id, text=random_verse, reply_markup=markup)
+    bot.send_message(chat_id=msg.chat.id, text=random_verse)
 
 #SEND LIST OF BOOKS WITH CHAPTERS
 @bot.message_handler(commands=list_of_books)
@@ -143,7 +128,7 @@ def send_next_chapter(msg):
         bot.send_message(msg.chat.id, current_chapter)
 
         if i > chapter_length:
-            back(msg)
+            send_book(msg)
 
         else:
             markup = types.ReplyKeyboardMarkup(row_width=1)
