@@ -66,20 +66,17 @@ bot = telebot.TeleBot(API_KEY)
 #KEY - FIRST STEP, SEND LIST OF BOOKS
 @bot.message_handler(commands=['old_testament', 'new_testament'])
 def send_book(msg):
-    print("send_book triggered")
     markup = types.ReplyKeyboardMarkup(row_width=1)
     btn_verse = types.KeyboardButton("/verse")
     btn_back = types.KeyboardButton("/back")
     markup.add(btn_verse, btn_back)
     if msg.text == "/old_testament":
-        print("Old test triggered")
         for book in OLD_TESTAMENT:
             btn = types.KeyboardButton(f"/{book}")
             markup.add(btn)
         bot.send_message(chat_id=msg.chat.id, text="Choose which book you would like to read or Verse for random Verse:", reply_markup=markup)
 
     elif msg.text == "/new_testament":
-        print("New test triggered")
         for book in NEW_TESTAMENT:
             btn = types.KeyboardButton(f"/{book}")
             markup.add(btn)
@@ -93,7 +90,7 @@ def back(msg):
     btn_old = types.KeyboardButton("/old_testament")
     btn_new = types.KeyboardButton("/new_testament")
     markup.add(btn_verse, btn_old, btn_new)
-    bot.send_message(chat_id=msg.chat.id, text="Choose which Testament you would like to read", reply_markup=markup)
+    bot.send_message(chat_id=msg.chat.id, text="Choose which Testament you would like to read or click Verse", reply_markup=markup)
 
 @bot.message_handler(commands=["verse"])
 def random_verse(msg):
@@ -179,10 +176,12 @@ def send_next_chapter(msg):
             markup.add(back_btn)
             bot.send_message(chat_id=msg.chat.id, text="Press Next to read next part or go back", reply_markup=markup)
         except IndexError:
-            markup_error = types.ReplyKeyboardMarkup(row_width=1)
-            btn_bible = types.KeyboardButton("/bible")
+            markup = types.ReplyKeyboardMarkup(row_width=1)
+            btn_old = types.KeyboardButton("/old_testament")
+            btn_new = types.KeyboardButton("/new_testament")
             btn_verse = types.KeyboardButton("/verse")
-            bot.send_message(chat_id=msg.chat.id, text="Please choose /bible to read the Bible or /verse to receive a Verse", reply_markup=markup_error)
+            markup.add(btn_old, btn_new, btn_verse)
+            bot.send_message(chat_id=msg.chat.id, text="Please choose testament to read or verse to receive a Verse", reply_markup=markup)
 
 #make the bot listen:
 bot.polling(none_stop=True)
