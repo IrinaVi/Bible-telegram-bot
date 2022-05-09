@@ -197,7 +197,7 @@ def getMessage():
 @server.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url='https://your_heroku_project.com/' + API_KEY)
+    bot.set_webhook(url='https://rocky-plateau-17698.herokuapp.com/' + API_KEY)
     return "!", 200
 
 #make the bot listen:
