@@ -83,7 +83,7 @@ def send_book(msg):
         bot.send_message(chat_id=msg.chat.id, text="Choose which book you would like to read or Verse for random Verse:",
                          reply_markup=markup)
 
-@bot.message_handler(commands=['back'])
+@bot.message_handler(commands=['back', 'start'])
 def back(msg):
     markup = types.ReplyKeyboardMarkup(row_width=1)
     btn_verse = types.KeyboardButton("/verse")
