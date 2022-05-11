@@ -59,14 +59,11 @@ NEW_TESTAMENT = ['Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1Corinthi
                  'Philippians', 'Colossians', '1Thessalonians', '2Thessalonians', '1Timothy', '2Timothy', 'Titus', 'Philemon',
                  'Hebrews', 'James', '1Peter', '2Peter', '1John', '2John', '3John', 'Jude', 'Revelation']
 
-API_KEY = os.environ['TELEGRAM_API']
+API_KEY = '5362768675:AAGvXqmKZJSsu833fY7ABoZpGauzvWKLXE8'
 
-#create bot:
 bot = telebot.TeleBot(API_KEY)
 server = Flask(__name__)
 
-
-#KEY - FIRST STEP, SEND LIST OF BOOKS
 @bot.message_handler(commands=['old_testament', 'new_testament'])
 def send_book(msg):
     markup = types.ReplyKeyboardMarkup(row_width=1)
@@ -110,7 +107,6 @@ def random_verse(msg):
     markup.add(btn_verse, btn_old, btn_new)
     bot.send_message(chat_id=msg.chat.id, text=random_verse, reply_markup=markup)
 
-#SEND LIST OF BOOKS WITH CHAPTERS
 @bot.message_handler(commands=list_of_books)
 def send_chapter_numbers(msg):
     markup = types.ReplyKeyboardMarkup(row_width=1)
@@ -124,7 +120,6 @@ def send_chapter_numbers(msg):
         markup.add(btn)
     bot.send_message(chat_id=msg.chat.id, text="Choose chapter to read or press back", reply_markup=markup)
 
-#SEND NEXT PART. NEXT SHOULD BE WIHOUT SLASH
 @bot.message_handler(content_types=['text'])
 def send_next_chapter(msg):
     if re.search(r"^NEXT\W", msg.text):
@@ -198,8 +193,6 @@ def webhook():
     bot.remove_webhook()
     bot.set_webhook(url='https://rocky-plateau-17698.herokuapp.com/' + API_KEY)
     return "!", 200
-
-bot.polling(none_stop=True)
 
 if __name__ == "__main__":
     server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
