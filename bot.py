@@ -4,7 +4,6 @@ from telebot import types
 from freebible import read_web
 import re
 import random
-import pyTelegramBotAPI
 from flask import Flask, request
 
 web = read_web()
