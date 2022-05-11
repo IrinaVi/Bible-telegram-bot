@@ -59,7 +59,7 @@ NEW_TESTAMENT = ['Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1Corinthi
                  'Philippians', 'Colossians', '1Thessalonians', '2Thessalonians', '1Timothy', '2Timothy', 'Titus', 'Philemon',
                  'Hebrews', 'James', '1Peter', '2Peter', '1John', '2John', '3John', 'Jude', 'Revelation']
 
-API_KEY = '5362768675:AAGvXqmKZJSsu833fY7ABoZpGauzvWKLXE8'
+API_KEY = os.environ.get("TELEGRAM_API")
 
 bot = telebot.TeleBot(API_KEY)
 server = Flask(__name__)
