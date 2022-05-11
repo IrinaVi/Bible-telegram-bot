@@ -200,8 +200,7 @@ def webhook():
     bot.set_webhook(url='https://rocky-plateau-17698.herokuapp.com/' + API_KEY)
     return "!", 200
 
-#make the bot listen:
-#bot.polling(none_stop=True)
+bot.polling(none_stop=True)
 
 if __name__ == "__main__":
     server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
