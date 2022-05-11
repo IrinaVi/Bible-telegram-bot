@@ -1,6 +1,6 @@
 appdirs==1.4.4
 APScheduler==3.6.3
-cachetools==5.0.0
+cachetools==4.2.2
 certifi==2021.10.8
 charset-normalizer==2.0.12
 chirptext==0.2a6.post1
