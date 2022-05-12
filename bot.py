@@ -59,7 +59,8 @@ NEW_TESTAMENT = ['Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1Corinthi
                  'Philippians', 'Colossians', '1Thessalonians', '2Thessalonians', '1Timothy', '2Timothy', 'Titus', 'Philemon',
                  'Hebrews', 'James', '1Peter', '2Peter', '1John', '2John', '3John', 'Jude', 'Revelation']
 
-API_KEY = os.environ.get("TELEGRAM_API")
+#API_KEY = os.environ.get("TELEGRAM_API")
+API_KEY = '5362768675:AAGvXqmKZJSsu833fY7ABoZpGauzvWKLXE8'
 
 bot = telebot.TeleBot(API_KEY)
 server = Flask(__name__)
@@ -131,7 +132,7 @@ def send_next_chapter(msg):
         current_chapter = ""
         for i in range(count+1,count+5):
             if i > chapter_length:
-                break
+                back(msg)
             else:
                 current_chapter += str(web[abbriviation][chapter_number][i])
 
