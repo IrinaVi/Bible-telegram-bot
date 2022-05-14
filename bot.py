@@ -137,6 +137,12 @@ def send_next_chapter(msg):
                 current_chapter += str(web[abbriviation][chapter_number][i])
 
         bot.send_message(msg.chat.id, current_chapter)
+        markup = types.ReplyKeyboardMarkup(row_width=1)
+        btn = types.KeyboardButton(f"NEXT,{abbriviation},{chapter_number},{i}")
+        back_btn = types.KeyboardButton("/back")
+        markup.add(btn)
+        markup.add(back_btn)
+        bot.send_message(chat_id=msg.chat.id, text="Press Next to read next part or go back", reply_markup=markup)
 
     else:
         try:
