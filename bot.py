@@ -138,9 +138,6 @@ def send_next_chapter(msg):
 
         bot.send_message(msg.chat.id, current_chapter)
 
-        if i > chapter_length:
-            back(msg)
-
         else:
             markup = types.ReplyKeyboardMarkup(row_width=1)
             btn = types.KeyboardButton(f"NEXT,{abbriviation},{chapter_number},{i}")
