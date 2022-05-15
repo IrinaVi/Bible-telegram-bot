@@ -67,6 +67,7 @@ server = Flask(__name__)
 
 @bot.message_handler(commands=['old_testament', 'new_testament'])
 def send_book(msg):
+    print("send book triggered")
     markup = types.ReplyKeyboardMarkup(row_width=1)
     btn_verse = types.KeyboardButton("/verse")
     btn_back = types.KeyboardButton("/back")
@@ -86,6 +87,7 @@ def send_book(msg):
 
 @bot.message_handler(commands=['back', 'start'])
 def back(msg):
+    print("back triggered")
     markup = types.ReplyKeyboardMarkup(row_width=1)
     btn_verse = types.KeyboardButton("/verse")
     btn_old = types.KeyboardButton("/old_testament")
@@ -95,6 +97,7 @@ def back(msg):
 
 @bot.message_handler(commands=["verse"])
 def random_verse(msg):
+    print("random verse triggered")
     random_chapter_name = random.choice(list_of_books)
     abbreviation = dkt[random_chapter_name]['abbr']
     chapter_number = random.randint(1,dkt[random_chapter_name]['chapters_number'])
@@ -110,6 +113,7 @@ def random_verse(msg):
 
 @bot.message_handler(commands=list_of_books)
 def send_chapter_numbers(msg):
+    print("send chapter triggered")
     markup = types.ReplyKeyboardMarkup(row_width=1)
     inter = msg.text
     chapter = inter.replace("/","")
@@ -137,12 +141,17 @@ def send_next_chapter(msg):
                 current_chapter += str(web[abbriviation][chapter_number][i])
 
         bot.send_message(msg.chat.id, current_chapter)
-        markup = types.ReplyKeyboardMarkup(row_width=1)
-        btn = types.KeyboardButton(f"NEXT,{abbriviation},{chapter_number},{i}")
-        back_btn = types.KeyboardButton("/back")
-        markup.add(btn)
-        markup.add(back_btn)
-        bot.send_message(chat_id=msg.chat.id, text="Press Next to read next part or go back", reply_markup=markup)
+
+        if i > chapter_length:
+            back(msg)
+
+        else:
+            markup = types.ReplyKeyboardMarkup(row_width=1)
+            btn = types.KeyboardButton(f"NEXT,{abbriviation},{chapter_number},{i}")
+            back_btn = types.KeyboardButton("/back")
+            markup.add(btn)
+            markup.add(back_btn)
+            bot.send_message(chat_id=msg.chat.id, text="Press Next to read next part or go back", reply_markup=markup)
 
     else:
         try:
