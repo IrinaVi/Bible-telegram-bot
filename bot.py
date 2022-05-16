@@ -136,7 +136,7 @@ def send_next_chapter(msg):
         current_chapter = ""
         for i in range(count+1,count+5):
             if i > chapter_length:
-                back(msg)
+                pass
             else:
                 current_chapter += str(web[abbriviation][chapter_number][i])
 
