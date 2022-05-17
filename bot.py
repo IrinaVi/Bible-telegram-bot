@@ -67,7 +67,6 @@ server = Flask(__name__)
 
 @bot.message_handler(commands=['old_testament', 'new_testament'])
 def send_book(msg):
-    print("send book triggered")
     markup = types.ReplyKeyboardMarkup(row_width=1)
     btn_verse = types.KeyboardButton("/verse")
     btn_back = types.KeyboardButton("/back")
@@ -87,7 +86,6 @@ def send_book(msg):
 
 @bot.message_handler(commands=['back', 'start'])
 def back(msg):
-    print("back triggered")
     markup = types.ReplyKeyboardMarkup(row_width=1)
     btn_verse = types.KeyboardButton("/verse")
     btn_old = types.KeyboardButton("/old_testament")
@@ -97,7 +95,6 @@ def back(msg):
 
 @bot.message_handler(commands=["verse"])
 def random_verse(msg):
-    print("random verse triggered")
     random_chapter_name = random.choice(list_of_books)
     abbreviation = dkt[random_chapter_name]['abbr']
     chapter_number = random.randint(1,dkt[random_chapter_name]['chapters_number'])
@@ -113,7 +110,6 @@ def random_verse(msg):
 
 @bot.message_handler(commands=list_of_books)
 def send_chapter_numbers(msg):
-    print("send chapter triggered")
     markup = types.ReplyKeyboardMarkup(row_width=1)
     inter = msg.text
     chapter = inter.replace("/","")
@@ -128,7 +124,6 @@ def send_chapter_numbers(msg):
 @bot.message_handler(content_types=['text'])
 def send_next_chapter(msg):
     if re.search(r"^NEXT\W", msg.text):
-        print("Next is triggered")
         message = msg.text.replace("/", "").split(",")
         abbriviation = message[1]
         chapter_number = int(message[2])
@@ -136,18 +131,14 @@ def send_next_chapter(msg):
         chapter_length = len(web[abbriviation][chapter_number])
         current_chapter = ""
         for i in range(count+1,count+5):
-            print(f"current i is {i}, chapter length is {chapter_length}")
             if i > chapter_length:
-                print(f"I is: {i}, it is bigger than the chapter length: {chapter_length}")
+                pass
             else:
                 current_chapter += str(web[abbriviation][chapter_number][i])
-                print(f"I is: {i}, chapter has been sent")
-        #gets stuck here because the message is empty?
         bot.send_message(msg.chat.id, current_chapter)
 
         if i >= chapter_length:
             back(msg)
-            print(f"Back function triggered, I is: {i}")
 
         else:
             markup = types.ReplyKeyboardMarkup(row_width=1)
@@ -156,7 +147,6 @@ def send_next_chapter(msg):
             markup.add(btn)
             markup.add(back_btn)
             bot.send_message(chat_id=msg.chat.id, text="Press Next to read next part or go back", reply_markup=markup)
-            print("else is triggered")
 
     else:
         try:
