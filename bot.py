@@ -145,7 +145,7 @@ def send_next_chapter(msg):
         #gets stuck here because the message is empty?
         bot.send_message(msg.chat.id, current_chapter)
 
-        if i > chapter_length:
+        if i >= chapter_length:
             back(msg)
             print(f"Back function triggered, I is: {i}")
 
